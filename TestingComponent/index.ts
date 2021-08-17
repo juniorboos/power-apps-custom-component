@@ -45,6 +45,9 @@ export class TestingComponent
     this.labelElement.setAttribute("class", "LinearRangeLabel");
     this.labelElement.setAttribute("id", "lrclabel");
 
+    // must begin audio action with an event
+    this._container.addEventListener("click", this._refreshData);
+
     // retrieving the latest value from the control and setting it to the HTMl elements.
     this.displayText = context.parameters.sampleProperty.raw!;
     this.labelElement.innerHTML = context.parameters.sampleProperty.formatted
@@ -54,12 +57,10 @@ export class TestingComponent
     // appending the HTML elements to the control's HTML container element.
     this._container.appendChild(this.labelElement);
     container.appendChild(this._container);
-
-    this.sttFromMic();
   }
 
   public async getTokenOrRefresh() {
-    const speechKey = process.env.SPEECH_KEY;
+    const speechKey = "INSERT_YOUR_KEY";
     const speechRegion = "westeurope";
 
     const headers = {
@@ -113,6 +114,9 @@ export class TestingComponent
 
   public refreshData(evt: Event): void {
     this.labelElement.innerHTML = this.displayText;
+    // begin mic audio event on click
+    // https://developer.chrome.com/blog/autoplay/#webaudio
+    this.sttFromMic();
     this._notifyOutputChanged();
   }
 
